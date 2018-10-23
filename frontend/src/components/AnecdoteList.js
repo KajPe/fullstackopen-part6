@@ -1,41 +1,23 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import { anecdoteVote } from './../reducers/anecdoteReducer'
 import { notificationInfo } from './../reducers/notificationReducer'
 import Filter from './Filter'
 
-class AnecdoteList extends React.Component {
-  componentDidMount() {
-    const { store } = this.context
-    this.unsubscribe = store.subscribe(() =>
-      this.forceUpdate()
-    )
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe()
-  }
-
+class AnecdoteListBase extends React.Component {
   voteforit = (anecdote) => {
-    this.context.store.dispatch(
-      anecdoteVote(anecdote.id)
-    )
-    this.context.store.dispatch(
-      notificationInfo('Voted for anecdote : "' + anecdote.content + '"')
-    )
+    this.props.anecdoteVote(anecdote.id)
+    this.props.notificationInfo('Voted for anecdote : "' + anecdote.content + '"')
   }
 
   render() {
-    const anecdotes = this.context.store.getState().anecdote
-    const srch = this.context.store.getState().search
-
     return (
       <div>
         <h2>Anecdotes</h2>
-        <Filter store={this.context.store} />
+        <Filter />
         {
-          anecdotes
-            .filter(anec => anec.content.toLowerCase().includes(srch.toLowerCase()))
+          this.props.anecdote
+            .filter(anec => anec.content.toLowerCase().includes(this.props.search.toLowerCase()))
             .sort((a, b) => b.votes - a.votes)
             .map(anecdote =>
               <div key={anecdote.id}>
@@ -58,8 +40,16 @@ class AnecdoteList extends React.Component {
   }
 }
 
-AnecdoteList.contextTypes = {
-  store: PropTypes.object
+const mapStateToProps = (state) => {
+  return {
+    anecdote: state.anecdote,
+    search: state.search
+  }
 }
+
+const AnecdoteList = connect(
+  mapStateToProps,
+  { anecdoteVote, notificationInfo }
+)(AnecdoteListBase)
 
 export default AnecdoteList

@@ -10,9 +10,7 @@ class NotificationBase extends React.Component {
       borderWidth: 1
     }
 
-    const info = this.props.notification
-
-    if (info.length > 0) {
+    if (this.props.notification.length > 0) {
       // We have a info, show it for 5 seconds
       setTimeout(() => {
         this.props.notificationClear()
@@ -20,7 +18,7 @@ class NotificationBase extends React.Component {
 
       return (
         <div style={style}>
-          {info}
+          {this.props.notification}
         </div>
       )
     }

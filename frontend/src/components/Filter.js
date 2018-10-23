@@ -12,11 +12,9 @@ class FilterBase extends React.Component {
       marginBottom: 10
     }
 
-    const val = this.props.search
-
     return (
       <div style={style}>
-        filter <input value={val} onChange={this.handleChange}/>
+        filter <input value={this.props.search} onChange={this.handleChange}/>
       </div>
     )
   }
