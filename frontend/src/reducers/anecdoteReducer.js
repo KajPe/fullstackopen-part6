@@ -5,31 +5,37 @@ const anecdoteReducer = (store = [], action) => {
   case 'INIT':
     return action.data
   case 'VOTE': {
-    const old = store.filter(a => a.id !==action.data.anecdote.id)
-    return [...old, action.data.anecdote ]
+    const old = store.filter(a => a.id !==action.data.newAnecdote.id)
+    return [...old, action.data.newAnecdote ]
   }
   case 'CREATE':
     return [...store, {
-      content: action.data.anecdote.content,
-      id: action.data.anecdote.id,
-      votes: action.data.anecdote.votes
+      content: action.data.newAnecdote.content,
+      id: action.data.newAnecdote.id,
+      votes: action.data.newAnecdote.votes
     }]
   default:
     return store
   }
 }
 
-export const anecdoteCreation = (anecdote) => {
-  return {
-    type: 'CREATE',
-    data: { anecdote }
+export const anecdoteCreation = (content) => {
+  return async (dispatch) => {
+    const newAnecdote = await anecdotesService.createNew(content)
+    dispatch({
+      type: 'CREATE',
+      data: { newAnecdote }
+    })
   }
 }
 
 export const anecdoteVote = (anecdote) => {
-  return {
-    type: 'VOTE',
-    data: { anecdote }
+  return async (dispatch) => {
+    const newAnecdote = await anecdotesService.update(anecdote)
+    dispatch({
+      type: 'VOTE',
+      data: { newAnecdote }
+    })
   }
 }
 
