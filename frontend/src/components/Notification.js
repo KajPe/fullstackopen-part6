@@ -1,19 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import { notificationClear } from './../reducers/notificationReducer'
 
-class Notification extends React.Component {
-  componentDidMount() {
-    const { store } = this.context
-    this.unsubscribe = store.subscribe(() =>
-      this.forceUpdate()
-    )
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe()
-  }
-
+class NotificationBase extends React.Component {
   render() {
     const style = {
       border: 'solid',
@@ -21,14 +10,12 @@ class Notification extends React.Component {
       borderWidth: 1
     }
 
-    const info = this.context.store.getState().notification
+    const info = this.props.notification
 
     if (info.length > 0) {
       // We have a info, show it for 5 seconds
       setTimeout(() => {
-        this.context.store.dispatch(
-          notificationClear()
-        )
+        this.props.notificationClear()
       }, 5000)
 
       return (
@@ -44,8 +31,15 @@ class Notification extends React.Component {
 }
 
 
-Notification.contextTypes = {
-  store: PropTypes.object
+const mapStateToProps = (state) => {
+  return {
+    notification: state.notification
+  }
 }
+
+const Notification = connect(
+  mapStateToProps,
+  { notificationClear }
+)(NotificationBase)
 
 export default Notification
