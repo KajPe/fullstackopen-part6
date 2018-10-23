@@ -1,11 +1,10 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { searchSet } from './../reducers/searchReducer'
 
-class Filter extends React.Component {
+class FilterBase extends React.Component {
   handleChange = (event) => {
-    this.props.store.dispatch(
-      searchSet(event.target.value)
-    )
+    this.props.searchSet(event.target.value)
   }
 
   render() {
@@ -13,7 +12,7 @@ class Filter extends React.Component {
       marginBottom: 10
     }
 
-    const val = this.props.store.getState().search
+    const val = this.props.search
 
     return (
       <div style={style}>
@@ -22,5 +21,16 @@ class Filter extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    search: state.search
+  }
+}
+
+const Filter = connect(
+  mapStateToProps,
+  { searchSet }
+)(FilterBase)
 
 export default Filter
