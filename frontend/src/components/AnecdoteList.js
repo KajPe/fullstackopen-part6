@@ -4,6 +4,12 @@ import { anecdoteVote } from './../reducers/anecdoteReducer'
 import { notificationInfo } from './../reducers/notificationReducer'
 import Filter from './Filter'
 
+const AnecdotesToShow = ( anecdotes, search ) => {
+  return anecdotes
+    .filter(anec => anec.content.toLowerCase().includes(search.toLowerCase()))
+    .sort((a, b) => b.votes - a.votes)
+}
+
 class AnecdoteListBase extends React.Component {
   voteforit = (anecdote) => {
     this.props.anecdoteVote(anecdote.id)
@@ -16,9 +22,7 @@ class AnecdoteListBase extends React.Component {
         <h2>Anecdotes</h2>
         <Filter />
         {
-          this.props.anecdote
-            .filter(anec => anec.content.toLowerCase().includes(this.props.search.toLowerCase()))
-            .sort((a, b) => b.votes - a.votes)
+          this.props.anecdotes
             .map(anecdote =>
               <div key={anecdote.id}>
                 <div>
@@ -42,8 +46,7 @@ class AnecdoteListBase extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    anecdote: state.anecdote,
-    search: state.search
+    anecdotes: AnecdotesToShow(state.anecdote, state.search)
   }
 }
 
