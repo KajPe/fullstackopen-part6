@@ -1,27 +1,38 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { anecdoteVote } from './../reducers/anecdoteReducer'
 import { notificationInfo } from './../reducers/notificationReducer'
 import Filter from './Filter'
 
 class AnecdoteList extends React.Component {
+  componentDidMount() {
+    const { store } = this.context
+    this.unsubscribe = store.subscribe(() =>
+      this.forceUpdate()
+    )
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
 
   voteforit = (anecdote) => {
-    this.props.store.dispatch(
+    this.context.store.dispatch(
       anecdoteVote(anecdote.id)
     )
-    this.props.store.dispatch(
+    this.context.store.dispatch(
       notificationInfo('Voted for anecdote : "' + anecdote.content + '"')
     )
   }
 
   render() {
-    const anecdotes = this.props.store.getState().anecdote
-    const srch = this.props.store.getState().search
+    const anecdotes = this.context.store.getState().anecdote
+    const srch = this.context.store.getState().search
 
     return (
       <div>
         <h2>Anecdotes</h2>
-        <Filter store={this.props.store} />
+        <Filter store={this.context.store} />
         {
           anecdotes
             .filter(anec => anec.content.toLowerCase().includes(srch.toLowerCase()))
@@ -45,6 +56,10 @@ class AnecdoteList extends React.Component {
       </div>
     )
   }
+}
+
+AnecdoteList.contextTypes = {
+  store: PropTypes.object
 }
 
 export default AnecdoteList

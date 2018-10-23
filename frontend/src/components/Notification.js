@@ -1,7 +1,19 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { notificationClear } from './../reducers/notificationReducer'
 
 class Notification extends React.Component {
+  componentDidMount() {
+    const { store } = this.context
+    this.unsubscribe = store.subscribe(() =>
+      this.forceUpdate()
+    )
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
+
   render() {
     const style = {
       border: 'solid',
@@ -9,12 +21,12 @@ class Notification extends React.Component {
       borderWidth: 1
     }
 
-    const info = this.props.store.getState().notification
+    const info = this.context.store.getState().notification
 
     if (info.length > 0) {
       // We have a info, show it for 5 seconds
       setTimeout(() => {
-        this.props.store.dispatch(
+        this.context.store.dispatch(
           notificationClear()
         )
       }, 5000)
@@ -29,6 +41,11 @@ class Notification extends React.Component {
     // info is empty, don't show anything
     return null
   }
+}
+
+
+Notification.contextTypes = {
+  store: PropTypes.object
 }
 
 export default Notification
