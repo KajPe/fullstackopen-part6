@@ -60,7 +60,13 @@ const Notification = ({ infomessage, clearNotification }) => {
     const style = {
       border: 'solid',
       padding: 10,
-      borderWidth: 1
+      marginTop: 10,
+      borderWidth: 1,
+      boxShadow: `1px 3px 1px grey`,
+      borderRadius: '10px',
+      fontWeight: 800,
+      color: `green`,
+      fontSize: 24
     }    
     return (
       <div style={style}>
