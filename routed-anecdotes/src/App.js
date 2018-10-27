@@ -1,11 +1,44 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
+
+const selectedMenu = {
+  fontWeight: 'bold',
+  color: 'blue',
+  borderRadius: '5px',
+  backgroundColor: 'white'
+}
+
+const menuBackground = {
+  backgroundColor: 'blue',
+  borderRadius: '10px',
+  padding: '8px',
+  height: '24px'
+}
+
+const menuStyle = {
+  width: '200px',
+  padding: '2px 10px 3px 10px',
+  fontSize: '20px',
+  textDecorationLine: 'none',
+  color: 'yellow'
+}
+
+const menuDiv = {
+  width: '140px',
+  float:'left'
+}
 
 const Menu = () => (
-  <div>    
-    <Link to='/' >anecdotes</Link>&nbsp;
-    <Link to='/create'>create new</Link>&nbsp;
-    <Link to='/about'>about</Link>&nbsp;
+  <div style={menuBackground}>    
+    <div style={menuDiv}>
+      <NavLink style={menuStyle} exact to='/' activeStyle={selectedMenu} >Anecdotes</NavLink>
+    </div>
+    <div style={menuDiv}>
+      <NavLink style={menuStyle} exact to='/create' activeStyle={selectedMenu}>Create New</NavLink>
+    </div>
+    <div style={menuDiv}>
+      <NavLink style={menuStyle} exact to='/about' activeStyle={selectedMenu}>About</NavLink>
+    </div>
   </div>
 )
 
