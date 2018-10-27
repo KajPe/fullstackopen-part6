@@ -52,6 +52,26 @@ const Footer = () => (
   </div>
 )
 
+const Notification = ({ infomessage, clearNotification }) => {
+  if (infomessage !== null) {
+    setTimeout(() => {
+      clearNotification()
+    }, 10000)
+    const style = {
+      border: 'solid',
+      padding: 10,
+      borderWidth: 1
+    }    
+    return (
+      <div style={style}>
+        {infomessage}
+      </div>
+    )
+  } else {
+    return null
+  }
+}
+
 class CreateNew extends React.Component {
   constructor() {
     super()
@@ -75,6 +95,7 @@ class CreateNew extends React.Component {
       info: this.state.info,
       votes: 0
     })
+    this.props.history.push('/')
   }
 
   render() {
@@ -123,13 +144,16 @@ class App extends React.Component {
           id: '2'
         }
       ],
-      notification: ''
+      notification: null
     } 
   }
 
-  addNew = (anecdote) => {
+  addNew = (anecdote, history) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
-    this.setState({ anecdotes: this.state.anecdotes.concat(anecdote) })
+    this.setState({ 
+      anecdotes: this.state.anecdotes.concat(anecdote),
+      notification: 'a new anecdote "' + anecdote.content + '" has been created'
+    })
   }
 
   anecdoteById = (id) =>
@@ -148,6 +172,12 @@ class App extends React.Component {
     this.setState({ anecdotes })
   }
 
+  clearNotification = () => {
+    this.setState({
+      notification: null
+    })
+  }
+
   render() {
     return (
       <div>
@@ -155,6 +185,7 @@ class App extends React.Component {
           <div>
             <h1>Software anecdotes</h1>
             <Menu />
+            <Notification infomessage={this.state.notification} clearNotification={this.clearNotification}/>
             <Route exact path='/' render={() =>
               <AnecdoteList anecdotes={this.state.anecdotes} />
             } />
@@ -162,8 +193,8 @@ class App extends React.Component {
               <Anecdote anecdote={this.anecdoteById(match.params.id)} />}
             />
             <Route exact path='/about' render={() => <About />} />
-            <Route exact path='/create' render={() =>
-              <CreateNew addNew={this.addNew}/>
+            <Route exact path='/create' render={ ({history}) =>
+              <CreateNew history={history} addNew={this.addNew}/>
             } />
           </div>
         </Router>
