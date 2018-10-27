@@ -14,7 +14,7 @@ class AnecdoteListBase extends React.Component {
   voteforit = async (anecdote) => {
     const NewAnecdote = { ...anecdote, votes: anecdote.votes+1 }
     this.props.anecdoteVote(NewAnecdote)
-    this.props.notificationInfo('Voted for anecdote : "' + anecdote.content + '"')
+    this.props.notificationInfo('Voted for anecdote : "' + anecdote.content + '"', 10)
   }
 
   render() {

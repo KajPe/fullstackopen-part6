@@ -9,7 +9,7 @@ class AnecdoteFormBase extends React.Component {
     const content = e.target.anecdote.value
     e.target.anecdote.value = ''
     this.props.anecdoteCreation(content)
-    this.props.notificationInfo('Created new anecdote : "' + content + '"')
+    this.props.notificationInfo('Created new anecdote : "' + content + '"', 10)
   }
 
   render() {

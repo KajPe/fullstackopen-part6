@@ -6,22 +6,31 @@ const notificationReducer = (store = initialInfo, action) => {
   case 'INFO':
     return action.data.content
   case 'CLEAR':
-    return ''
+    return null
   default:
     return store
   }
 }
 
-export const notificationInfo = (content) => {
-  return {
-    type: 'INFO',
-    data: { content }
+export const notificationInfo = (content, showtime=5) => {
+  return async (dispatch) => {
+    dispatch({
+      type: 'INFO',
+      data: { content }
+    })
+    setTimeout(() => {
+      dispatch({
+        type: 'CLEAR'
+      })
+    }, showtime*1000)
   }
 }
 
 export const notificationClear = () => {
-  return {
-    type: 'CLEAR'
+  return async (dispatch) => {
+    dispatch({
+      type: 'CLEAR'
+    })
   }
 }
 
