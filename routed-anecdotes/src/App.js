@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
+import { ListGroup, ListGroupItem } from 'react-bootstrap'
 
 const selectedMenu = {
   fontWeight: 'bold',
@@ -12,7 +13,7 @@ const menuBackground = {
   backgroundColor: 'blue',
   borderRadius: '10px',
   padding: '8px',
-  height: '24px'
+  height: '44px'
 }
 
 const menuStyle = {
@@ -45,11 +46,13 @@ const Menu = () => (
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
-    <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >
-        <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
-      </li>)}
-    </ul>  
+    <ListGroup>
+      {anecdotes.map(anecdote =>
+        <ListGroupItem key={anecdote.id}>
+          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+        </ListGroupItem>
+      )}
+    </ListGroup>
   </div>
 )
 
@@ -219,7 +222,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <Router>
           <div>
             <h1>Software anecdotes</h1>
