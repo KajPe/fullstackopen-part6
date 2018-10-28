@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
 import { ListGroup, ListGroupItem, Col, Row, Grid } from 'react-bootstrap'
+import { FormGroup, Form, ControlLabel, FormControl, Button, Alert, Panel } from 'react-bootstrap'
 
 const selectedMenu = {
   fontWeight: 'bold',
@@ -31,7 +32,10 @@ const menuDiv = {
 
 const footerStyle = {
   textAlign: 'center',
-  padding: '5px'
+  padding: '5px',
+  marginBottom: '15px',
+  borderRadius: '10px',
+  boxShadow: '0 0 20px gray'
 }
 
 const Menu = () => (
@@ -63,11 +67,18 @@ const AnecdoteList = ({ anecdotes }) => (
 
 const Anecdote = ({ anecdote }) => (
   <div>
-    <h2>{anecdote.content}</h2>
-    <div>has {anecdote.votes} votes</div>
-    <div>Author: {anecdote.author}</div>
-    <div>For more info see: {anecdote.info}</div>
-    <br />
+    <Panel style={{ marginTop: '20px' }}>
+      <Panel.Heading>
+        <Panel.Title>{anecdote.content}</Panel.Title>
+      </Panel.Heading>
+      <Panel.Body>
+      <ul>
+        <li>Has {anecdote.votes} votes</li>
+        <li>Author: {anecdote.author}</li>
+       <li>For more info see: <a href={anecdote.info}>{anecdote.info}</a></li>
+      </ul>
+      </Panel.Body>
+    </Panel>
   </div>
 )
 
@@ -94,10 +105,16 @@ const About = () => (
 )
 
 const Footer = () => (
-  <div style={footerStyle}>
-    Anecdote app for <a href='https://courses.helsinki.fi/fi/TKT21009/121540749'>Full Stack -sovelluskehitys</a>.
-    See <a href='https://github.com/mluukkai/routed-anecdotes'>https://github.com/mluukkai/routed-anecdotes</a> for the source code.
-  </div>
+  <footer className="navbar-fixed-bottom">
+    <Grid>
+      <Row className="show-grid">
+        <Col style={footerStyle}>
+          Anecdote app for <a href='https://courses.helsinki.fi/fi/TKT21009/121540749'>Full Stack -sovelluskehitys</a>.
+          See <a href='https://github.com/mluukkai/routed-anecdotes'>https://github.com/mluukkai/routed-anecdotes</a> for the source code.
+        </Col>
+      </Row>
+    </Grid>
+  </footer>
 )
 
 const Notification = ({ infomessage, clearNotification }) => {
@@ -105,20 +122,12 @@ const Notification = ({ infomessage, clearNotification }) => {
     setTimeout(() => {
       clearNotification()
     }, 10000)
-    const style = {
-      border: 'solid',
-      padding: 10,
-      marginTop: 10,
-      borderWidth: 1,
-      boxShadow: `1px 3px 1px grey`,
-      borderRadius: '10px',
-      fontWeight: 800,
-      color: `green`,
-      fontSize: 24
-    }    
     return (
-      <div style={style}>
-        {infomessage}
+      <div>
+        <br />
+        <Alert color='success'>
+          {infomessage}
+        </Alert>
       </div>
     )
   } else {
@@ -155,22 +164,38 @@ class CreateNew extends React.Component {
   render() {
     return(
       <div>
-        <h2>create a new anecdote</h2>
-        <form onSubmit={this.handleSubmit}>
-          <div>
-            content 
-            <input name='content' value={this.state.content} onChange={this.handleChange} />
-          </div>
-          <div>
-            author
-            <input name='author' value={this.state.author} onChange={this.handleChange} />
-          </div>
-          <div>
-            url for more info
-            <input name='info' value={this.state.info} onChange={this.handleChange} />
-          </div> 
-          <button>create</button>
-        </form>
+        <h2>Create a new anecdote</h2>
+        <Form horizontal onSubmit={this.handleSubmit}>
+          <FormGroup>
+            <Col componentClass={ControlLabel} sm={2}>
+              Content
+            </Col>
+            <Col sm={10}>
+              <FormControl type="text" name='content' value={this.state.content} onChange={this.handleChange} />
+            </Col>
+          </FormGroup>
+          <FormGroup>
+            <Col componentClass={ControlLabel} sm={2}>
+              Author
+            </Col>
+            <Col sm={10}>
+              <FormControl type="text" name='author' value={this.state.author} onChange={this.handleChange} />
+            </Col>
+          </FormGroup>
+          <FormGroup>
+            <Col componentClass={ControlLabel} sm={2}>
+              URL for more info
+            </Col>
+            <Col sm={10}>
+              <FormControl type="text" name='info' value={this.state.info} onChange={this.handleChange} />
+            </Col>
+            </FormGroup>
+          <FormGroup>
+            <Col smOffset={2} sm={10}>
+              <Button type="submit" bsStyle="success">Create</Button>
+            </Col>
+          </FormGroup>
+        </Form>
       </div>  
     )
 
@@ -206,7 +231,7 @@ class App extends React.Component {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     this.setState({ 
       anecdotes: this.state.anecdotes.concat(anecdote),
-      notification: 'a new anecdote "' + anecdote.content + '" has been created'
+      notification: 'A new anecdote "' + anecdote.content + '" has been created.'
     })
   }
 
