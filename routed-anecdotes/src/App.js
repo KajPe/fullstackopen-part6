@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
-import { ListGroup, ListGroupItem } from 'react-bootstrap'
+import { ListGroup, ListGroupItem, Col, Row, Grid } from 'react-bootstrap'
 
 const selectedMenu = {
   fontWeight: 'bold',
@@ -27,6 +27,11 @@ const menuStyle = {
 const menuDiv = {
   width: '140px',
   float:'left'
+}
+
+const footerStyle = {
+  textAlign: 'center',
+  padding: '5px'
 }
 
 const Menu = () => (
@@ -68,23 +73,30 @@ const Anecdote = ({ anecdote }) => (
 
 const About = () => (
   <div>
-    <h2>About anecdote app</h2>
-    <p>According to Wikipedia:</p>
-    
-    <em>An anecdote is a brief, revealing account of an individual person or an incident. 
-      Occasionally humorous, anecdotes differ from jokes because their primary purpose is not simply to provoke laughter but to reveal a truth more general than the brief tale itself, 
-      such as to characterize a person by delineating a specific quirk or trait, to communicate an abstract idea about a person, place, or thing through the concrete details of a short narrative. 
-      An anecdote is "a story with a point."</em>
-
-    <p>Software engineering is full of excellent anecdotes, at this app you can find the best and add more.</p>
+    <br />
+    <Grid>
+      <Row className="show-grid">
+        <Col xs={6} xsOffset={1}>
+          <h2>About anecdote app</h2>
+          <p>According to Wikipedia:</p>
+          <em>An anecdote is a brief, revealing account of an individual person or an incident. 
+          Occasionally humorous, anecdotes differ from jokes because their primary purpose is not simply to provoke laughter but to reveal a truth more general than the brief tale itself, 
+          such as to characterize a person by delineating a specific quirk or trait, to communicate an abstract idea about a person, place, or thing through the concrete details of a short narrative. 
+          An anecdote is "a story with a point."</em>
+          <br />
+          <br />
+          <p>Software engineering is full of excellent anecdotes, at this app you can find the best and add more.</p>
+        </Col>
+        <Col xs={4}><img alt="Richard Stallman" src="/Richard_Stallman.jpg" /></Col>
+      </Row>
+    </Grid>
   </div>
 )
 
 const Footer = () => (
-  <div>
+  <div style={footerStyle}>
     Anecdote app for <a href='https://courses.helsinki.fi/fi/TKT21009/121540749'>Full Stack -sovelluskehitys</a>.
-
-    See <a href='https://github.com/mluukkai/routed-anecdotes'>https://github.com/mluukkai/routed-anecdotes</a> for the source code. 
+    See <a href='https://github.com/mluukkai/routed-anecdotes'>https://github.com/mluukkai/routed-anecdotes</a> for the source code.
   </div>
 )
 
